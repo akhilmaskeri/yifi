@@ -2,27 +2,33 @@ import urllib
 
 class urlgen:
     def __init__(self):
-        self.url = "https://yts.ag/api/v2/list_movies.json?"
+        self.query = "https://yts.ag/api/v2/list_movies.json?"
+        self.details = "https://yts.ag/api/v2/movie_details.json?"
         self.parm = dict()
 
-    def add(self,key,value):
+    def addQ(self,key,value):
         self.parm[key] = str(value)
 
     def genrate(self,arg):
 
+        if "-id" in arg:
+            Id = ""
+            if len(arg) >= arg.index("-id")+1:
+                Id = arg[arg.index("-id")+1]
+                self.addQ("movie_id",Id)
+                return self.details + urllib.urlencode(self.parm)
         if "-s" in arg:
             sort = ""
 
             if len(arg) >= arg.index("-s")+1:
                 sort = arg[arg.index("-s")+1]
-
             if sort == "r" or sort == "s" or sort == "rating" or sort == "seeds":
                 if sort == "r" or sort == "rating":
                     sort = "rating"
                 else:
                     sort = "seeds"
 
-                self.add("sort_by", sort)
+                self.addQ("sort_by", sort)
             else:
                 pass
 
@@ -37,7 +43,7 @@ class urlgen:
                     order = "asc"
                 else:
                     order = "desc"
-                self.add("order_by", order)
+                self.addQ("order_by", order)
             else:
                 pass
 
@@ -47,7 +53,7 @@ class urlgen:
                 length = arg[arg.index("-l")+1]
             try:
                 val = int(length)
-                self.add("limit",length)
+                self.addQ("limit",length)
             except ValueError:
                 print "value error with parsing the limit "
                 print '-'*40
@@ -58,7 +64,7 @@ class urlgen:
                 page = arg[arg.index("-p")+1]
             try:
                 val = int(page)
-                self.add("page",page)
+                self.addQ("page",page)
             except ValueError:
                 print "value error with parsing the page"
                 print '-'*40
@@ -69,13 +75,19 @@ class urlgen:
                 q = arg[arg.index("-f")+1]
 
             if "-" not in q:
-                self.add("query_term",q)
+                self.addQ("query_term",q)
 
         if "-g" in arg:
             geners = ""
             if len(arg) >= arg.index("-g")+1:
                 g = arg[arg.index("-g")+1].split(",")
-                self.add("gener",g)
+                self.addQ("gener",g)
 
-        return self.url+urllib.urlencode(self.parm)
+        if "-m" in arg:
+            min_rating = ""
+            if len(arg) >= arg.index("-m")+1:
+                min_rating = arg[arg.index("-m")+1]
+                self.addQ("minimum_rating",min_rating) 
+
+        return self.query+urllib.urlencode(self.parm)
 
