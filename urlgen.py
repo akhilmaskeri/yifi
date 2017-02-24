@@ -1,5 +1,4 @@
 import urllib
-
 class urlgen:
     def __init__(self):
         self.query = "https://yts.ag/api/v2/list_movies.json?"

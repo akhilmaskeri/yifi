@@ -1,7 +1,14 @@
 import requests
+import urllib
 from urlgen import urlgen
 import json,sys
 import webbrowser
+
+if '--help' in sys.argv:
+    f = open("README.md")
+    print f.read()
+    f.close()
+    exit()
 
 url = urlgen()
 url = url.genrate(sys.argv)
@@ -18,9 +25,21 @@ if "-id" in sys.argv:
     movie = response["data"]["movie"]
 
     if "--trailer" in sys.argv:
-        webbrowser.open("http://youtube.com/watch?v="+movie["yt_trailer_code"]); 
+        webbrowser.open("http://youtube.com/watch?v="+movie["yt_trailer_code"]);
 
-    print "title   : "+str(movie["title_long"])
+    if "--download" in sys.argv:
+        print sys.argv
+        quality = ""
+        if "-q" in sys.argv:
+            if len(sys.argv) >= sys.argv.index("-q")+1:
+                quality = sys.argv[sys.argv.index("-q")+1]
+        else:
+            quality = len(movie["torrents"])-1
+        
+        print movie['torrents'][quality]['url'],"~/Downloads/"+movie['title']+".torrent"
+        urllib.urlretrive(movie["torrents"][quality]['url'],"~/Downloads/"+movie['title']+".torrent")
+
+    print "title   : "+str(movie["title_long"].encode('utf-8'))
     print "year    : "+str(movie["year"])
     print "rating  : * "+str(movie["rating"])
     print "runtime : "+str(movie["runtime"])+" min"
@@ -29,7 +48,16 @@ if "-id" in sys.argv:
     print "mpa     : "+movie["mpa_rating"]
     print "descr   : "+movie["description_intro"]
 
+    qualities = ""
+    for i in range(len(movie["torrents"])):
+        if i < len(movie['torrents'])-1:
+            qualities += (movie['torrents'][i]['quality']+" , ")
+        else:
+            qualities += movie['torrents'][i]['quality']
+    print "quality : "+qualities
+
+
+
 else:
     for movie in response["data"]["movies"]:
-        print str(movie["id"]),str(movie["title"])
-
+        print str(movie["id"]),str(movie["title"].encode('utf-8'))
