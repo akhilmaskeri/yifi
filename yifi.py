@@ -7,14 +7,14 @@ from urlgen import urlgen
 import magnet
 
 
-def displayHelp():
+def helpThePoorSoul():
     f = open("help.txt")
     print f.read()
     f.close()
     exit()
 
 if '--help' in sys.argv:
-    displayHelp()
+    helpThePoorSoul()
 
 url = urlgen()
 url = url.genrate(sys.argv)
@@ -35,15 +35,15 @@ if "-id" in sys.argv:
         exit(0)
 
     if "--magnet" in sys.argv:
-        quality = 0
+        quality = "0"
         if "-q" in sys.argv:
             if len(sys.argv) >= sys.argv.index("-q")+1:
                 quality = sys.argv[sys.argv.index("-q")+1]
 
-            if type(quality) is not int:
-                displayHelp()
+            if not str.isdigit(quality):
+                helpThePoorSoul()
 
-        webbrowser.open(magnet.getMagnet(movie,quality))
+        webbrowser.open(magnet.getMagnet(movie,int(quality)))
         exit(0)
 
     if "--download" in sys.argv:
