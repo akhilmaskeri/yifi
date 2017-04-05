@@ -1,11 +1,12 @@
 import requests
-import urllib
-from urlgen import urlgen
+import shutil,os
 import json,sys
 import webbrowser
 
+from urlgen import urlgen
+
 if '--help' in sys.argv:
-    f = open("README.md")
+    f = open("help.txt")
     print f.read()
     f.close()
     exit()
@@ -35,9 +36,10 @@ if "-id" in sys.argv:
                 quality = sys.argv[sys.argv.index("-q")+1]
         else:
             quality = len(movie["torrents"])-1
-        
+
         print movie['torrents'][quality]['url'],"~/Downloads/"+movie['title']+".torrent"
-        urllib.urlretrive(movie["torrents"][quality]['url'],"~/Downloads/"+movie['title']+".torrent")
+        webbrowser.open(movie["torrents"][quality]['url'])
+        exit(0)
 
     print "title   : "+str(movie["title_long"].encode('utf-8'))
     print "year    : "+str(movie["year"])
