@@ -4,12 +4,17 @@ import json,sys
 import webbrowser
 
 from urlgen import urlgen
+import magnet
 
-if '--help' in sys.argv:
+
+def displayHelp():
     f = open("help.txt")
     print f.read()
     f.close()
     exit()
+
+if '--help' in sys.argv:
+    displayHelp()
 
 url = urlgen()
 url = url.genrate(sys.argv)
@@ -27,9 +32,21 @@ if "-id" in sys.argv:
 
     if "--trailer" in sys.argv:
         webbrowser.open("http://youtube.com/watch?v="+movie["yt_trailer_code"]);
+        exit(0)
+
+    if "--magnet" in sys.argv:
+        quality = 0
+        if "-q" in sys.argv:
+            if len(sys.argv) >= sys.argv.index("-q")+1:
+                quality = sys.argv[sys.argv.index("-q")+1]
+
+            if type(quality) is not int:
+                displayHelp()
+
+        webbrowser.open(magnet.getMagnet(movie,quality))
+        exit(0)
 
     if "--download" in sys.argv:
-        print sys.argv
         quality = ""
         if "-q" in sys.argv:
             if len(sys.argv) >= sys.argv.index("-q")+1:

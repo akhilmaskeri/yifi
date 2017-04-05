@@ -9,7 +9,11 @@
     -f  <string>      find query term
     -g  <geners>      search by geners
     -m  <number>      minimum rating (max 10)
-    -d  or --download downloads the torrent file
+
+    --url             displays the URL hit 
+    --download        downloads the torrent file
+    --magnet          downloads the movie using the magnet
+ 
 
 first simply get the list top seeded and latest movie torrent by
         
