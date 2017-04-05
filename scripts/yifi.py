@@ -8,7 +8,7 @@ import magnet
 
 
 def helpThePoorSoul():
-    f = open("help.txt")
+    f = open("../help.txt")
     print f.read()
     f.close()
     exit()
