@@ -32,5 +32,10 @@ once you have the id you can view the details of the movie by simply
     
 and when you want to download the movie go with
     
-    $python yifi -id -d
+    $python yifi -id <movie_id> --download
+
 this would download the **.torrent** file 
+
+to download the movie using the torrent do
+    
+    $python yifi -id <movie_id> --magnet
