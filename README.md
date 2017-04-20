@@ -17,25 +17,29 @@
 
 first simply get the list top seeded and latest movie torrent by
         
-        $python yifi
+        $yifi
 
 the output has 2 columns **movie_id** and **movie_title**
 
+to search the movie in yifi database 
+    
+        $yifi -f <move_name>
+
 if you want the further page results go for 
     
-        $python yifi -p 2 
-        $python yifi -p 5
+        $yifi -p 2 
+        $yifi -p 5
 
 once you have the id you can view the details of the movie by simply
     
-    $python yifi -id movie_id
+        $yifi -id movie_id
     
 and when you want to download the movie go with
     
-    $python yifi -id <movie_id> --download
+        $yifi -id <movie_id> --download
 
 this would download the **.torrent** file 
 
 to download the movie using the torrent do
     
-    $python yifi -id <movie_id> --magnet
+        $yifi -id <movie_id> --magnet
