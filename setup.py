@@ -6,13 +6,13 @@ def read(fname):
 
 setup(
     name = "yifi",
-    version = "0.0.7",
+    version = "1.1.7",
     author = "vitaminC",
     author_email = "dmakhil@gmail.com",
     description = ("browse yifi on your command line"),
     license = "GPLv3",
     keywords = "yifi torrent download",
-    packages = ['scripts'],
+    packages = ['yifi'],
     long_description = read('help.txt'),
     classifiers=[
         "Development status :: Alpha",
