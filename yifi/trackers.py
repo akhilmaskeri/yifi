@@ -1,5 +1,3 @@
-import urllib
-
 trackers = [
     'udp://open.demonii.com:1337/announcejj',
     'udp://tracker.istole.it:80',
@@ -15,10 +13,6 @@ trackers = [
     'http://exodus.desync.com:6969/announce'
 ]
 
-def getMagnet(torrent,quality):
+def getTrackers():
+    return trackers
 
-    base = "magnet:?xt=urn:btih:"+torrent["torrents"][quality]["hash"]+"&dn"+urllib.quote(torrent["title"])
-    for t in trackers:
-        base+= '&tr='+t
-
-    return base

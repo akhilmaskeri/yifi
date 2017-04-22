@@ -1,82 +1,83 @@
 import requests
 import shutil,os
-import json,sys
-import webbrowser
+import sys
+import Movie
 
 from urlgen import urlgen
-import magnet
 
+url = urlgen().genrate(sys.argv)
 
 def helpThePoorSoul():
     f = open("../help.txt")
     print f.read()
     f.close()
+
     exit()
 
 if '--help' in sys.argv:
     helpThePoorSoul()
 
-url = urlgen()
-url = url.genrate(sys.argv)
-
 if "--url" in sys.argv:
     print url
 
 response=requests.get(url)
-response = json.loads(response.text)
-
-print "status : ",response["status"],"| ",response["status_message"]
+movie = Movie.Movie(response)
 
 if "-id" in sys.argv:
-    movie = response["data"]["movie"]
 
     if "--trailer" in sys.argv:
-        webbrowser.open("http://youtube.com/watch?v="+movie["yt_trailer_code"]);
-        exit(0)
+        movie.watchTrailer()
 
     if "--magnet" in sys.argv:
-        quality = "0"
+
         if "-q" in sys.argv:
+
             if len(sys.argv) >= sys.argv.index("-q")+1:
                 quality = sys.argv[sys.argv.index("-q")+1]
 
-            if not str.isdigit(quality):
+            if quality not in movie.getQualities():
                 helpThePoorSoul()
 
-        webbrowser.open(magnet.getMagnet(movie,int(quality)))
-        exit(0)
+        else:
+            print "please select the quality :"
+            qualities = movie.getQualities()
+
+            for i in range(len(qualities)):
+                print i+1," -> ",qualities[i]
+
+            quality = int(raw_input())
+
+        movie.downloadMagnet(quality)
 
     if "--download" in sys.argv:
+
         quality = ""
+
         if "-q" in sys.argv:
+
             if len(sys.argv) >= sys.argv.index("-q")+1:
                 quality = sys.argv[sys.argv.index("-q")+1]
+
+            if quality not in movie.getQualities():
+                helpThePoorSoul()
+
         else:
-            quality = len(movie["torrents"])-1
+            print "please select the quality :"
+            qualities = movie.getQualities()
 
-        print movie['torrents'][quality]['url'],"~/Downloads/"+movie['title']+".torrent"
-        webbrowser.open(movie["torrents"][quality]['url'])
-        exit(0)
+            for i in range(len(qualities)):
+                print i+1," -> ",qualities[i]
 
-    print "title   : "+str(movie["title_long"].encode('utf-8'))
-    print "year    : "+str(movie["year"])
-    print "rating  : * "+str(movie["rating"])
-    print "runtime : "+str(movie["runtime"])+" min"
-    print "lang    : "+str(movie["language"])
-    print "genres  :",[str(genre) for genre in movie["genres"]]
-    print "mpa     : "+movie["mpa_rating"]
-    print "descr   : "+movie["description_intro"]
+            quality = int(raw_input())
 
-    qualities = ""
-    for i in range(len(movie["torrents"])):
-        if i < len(movie['torrents'])-1:
-            qualities += (movie['torrents'][i]['quality']+" , ")
-        else:
-            qualities += movie['torrents'][i]['quality']
-    print "quality : "+qualities
+        movie.downloadTorrent(quality)
 
+    movie.displayStatus()
 
 
 else:
-    for movie in response["data"]["movies"]:
-        print str(movie["id"]),str(movie["title"].encode('utf-8'))
+    try:
+        movie.displayLatest()
+    except KeyError:
+        print "sorry! couldn't find the movie"
+        print "please check the movie name again"
