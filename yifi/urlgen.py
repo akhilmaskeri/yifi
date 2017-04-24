@@ -15,7 +15,8 @@ class urlgen:
             if len(arg) >= arg.index("-id")+1:
                 Id = arg[arg.index("-id")+1]
                 self.addQ("movie_id",Id)
-                return self.details + urllib.urlencode(self.parm)
+                return self.details + urllib.parse.urlencode(self.parm)
+                #return self.details + urllib.urlencode(self.parm)
         if "-s" in arg:
             sort = ""
 
@@ -54,8 +55,8 @@ class urlgen:
                 val = int(length)
                 self.addQ("limit",length)
             except ValueError:
-                print "value error with parsing the limit "
-                print '-'*40
+                print ("value error with parsing the limit ")
+                print ('-'*40)
 
         if "-p" in arg:
             page = ""
@@ -65,8 +66,8 @@ class urlgen:
                 val = int(page)
                 self.addQ("page",page)
             except ValueError:
-                print "value error with parsing the page"
-                print '-'*40
+                print ("value error with parsing the page")
+                print ('-'*40)
 
         if "-f" in arg:
             q = ""
@@ -88,5 +89,8 @@ class urlgen:
                 min_rating = arg[arg.index("-m")+1]
                 self.addQ("minimum_rating",min_rating) 
 
-        return self.query+urllib.urlencode(self.parm)
+        # python 2.7
+        #return self.query+urllib.urlencode(self.parm)
 
+        # python 3
+        return self.query+urllib.parse.urlencode(self.parm)

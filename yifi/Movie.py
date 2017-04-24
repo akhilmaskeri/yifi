@@ -13,7 +13,7 @@ class Movie:
             self.movie = self.jsonObject["data"]["movie"]
             self.qualities=[]
             for i in range(len(self.movie["torrents"])):
-                self.qualities.append(self.movie['torrents'][i]['quality'].encode('utf-8'))
+                self.qualities.append(self.movie['torrents'][i]['quality'])
 
     def downloadMagnet(self,quality):
 
@@ -25,7 +25,7 @@ class Movie:
         exit(0)
 
     def downloadTorrent(self,quality):
-        print self.movie['torrents'][quality-1]['url'],"~/Downloads/"+self.movie['title']+".torrent"
+        print (self.movie['torrents'][quality-1]['url'],"~/Downloads/"+self.movie['title']+".torrent")
         webbrowser.open(self.movie["torrents"][quality-1]['url'])
         exit(0)
 
@@ -35,22 +35,22 @@ class Movie:
 
     def displayLatest(self):
         for movie in self.jsonObject["data"]["movies"]:
-            print str(movie["id"]),str(movie["title"].encode('utf-8'))
+            print (str(movie["id"]),str(movie["title"]))
 
 
     def displayStatus(self):
         movie = self.movie
 
-        print "title   : "+str(movie["title_long"].encode('utf-8'))
-        print "year    : "+str(movie["year"])
-        print "rating  : * "+str(movie["rating"])
-        print "runtime : "+str(movie["runtime"])+" min"
-        print "lang    : "+str(movie["language"])
-        print "genres  :",[str(genre) for genre in movie["genres"]]
-        print "mpa     : "+movie["mpa_rating"]
-        print "quality : " + str(self.getQualities())
-        print "descr   :"+"\n\t  ".join(textwrap.wrap(" "+movie["description_intro"]))
-        print ""
+        print ("title   : "+str(movie["title_long"]))
+        print ("year    : "+str(movie["year"]))
+        print ("rating  : * "+str(movie["rating"]))
+        print ("runtime : "+str(movie["runtime"])+" min")
+        print ("lang    : "+str(movie["language"]))
+        print ("genres  :",[str(genre) for genre in movie["genres"]])
+        print ("mpa     : "+movie["mpa_rating"])
+        print ("quality : " + str(self.getQualities()))
+        print ("descr   :"+"\n\t  ".join(textwrap.wrap(" "+movie["description_intro"])))
+        print ("")
 
     def watchTrailer(self):
         webbrowser.open("http://youtube.com/watch?v=" + self.movie["yt_trailer_code"])

@@ -1,3 +1,4 @@
+from __future__ import print_function
 import requests
 import shutil,os
 import sys
@@ -9,7 +10,7 @@ url = urlgen().genrate(sys.argv)
 
 def helpThePoorSoul():
     f = open("../help.txt")
-    print f.read()
+    print(f.read())
     f.close()
 
     exit()
@@ -18,7 +19,7 @@ if '--help' in sys.argv:
     helpThePoorSoul()
 
 if "--url" in sys.argv:
-    print url
+    print(url)
 
 response=requests.get(url)
 movie = Movie.Movie(response)
@@ -39,13 +40,13 @@ if "-id" in sys.argv:
                 helpThePoorSoul()
 
         else:
-            print "please select the quality :"
+            print ("please select the quality :")
             qualities = movie.getQualities()
 
             for i in range(len(qualities)):
-                print i+1," -> ",qualities[i]
+                print (i+1," -> ",qualities[i])
 
-            quality = int(raw_input())
+            quality = int(input())
 
         movie.downloadMagnet(quality)
 
@@ -62,11 +63,11 @@ if "-id" in sys.argv:
                 helpThePoorSoul()
 
         else:
-            print "please select the quality :"
+            print ("please select the quality :")
             qualities = movie.getQualities()
 
             for i in range(len(qualities)):
-                print i+1," -> ",qualities[i]
+                print (i+1," -> ",qualities[i])
 
             quality = int(raw_input())
 
@@ -79,5 +80,5 @@ else:
     try:
         movie.displayLatest()
     except KeyError:
-        print "sorry! couldn't find the movie"
-        print "please check the movie name again"
+        print ("sorry! couldn't find the movie")
+        print ("please check the movie name again")
