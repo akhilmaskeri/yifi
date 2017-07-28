@@ -1,84 +1,84 @@
-from __future__ import print_function
 import requests
-import shutil,os
-import sys
 import Movie
 
-from urlgen import urlgen
+try:
+    from urllib.parse import urlencode
+except ImportError:
+    from urllib import urlencode
 
-url = urlgen().genrate(sys.argv)
+class browser:
 
-def helpThePoorSoul():
-    f = open("../help.txt")
-    print(f.read())
-    f.close()
+    def __init__(self):
+        self.query ="https://yts.ag/api/v2/list_movies.json?"
+        self.details = "https://yts.ag/api/v2/movie_details.json?"
 
-    exit()
+    def bySeeds(self,limit=20,page=1,min_rating=0):
+        param = dict({"limit":limit})
+        param["page"]=page
+        param["minimum_rating"]=min_rating
 
-if '--help' in sys.argv:
-    helpThePoorSoul()
+        response=requests.get(self.query+urlencode(param))
 
-if "--url" in sys.argv:
-    print(url)
+        movie = Movie.Movie(response)
+        return movie.getRecents()
 
-response=requests.get(url)
-movie = Movie.Movie(response)
+    def byRating(self,limit=20,page=1,min_rating=0):
+        param = dict({"limit":limit})
+        param["page"]=page
+        param["minimum_rating"]=min_rating
+        param["sort_by"]="rating"
+        response=requests.get(self.query+urlencode(param))
 
-if "-id" in sys.argv:
+        movie = Movie.Movie(response)
+        return movie.getRecents()
 
-    if "--trailer" in sys.argv:
-        movie.watchTrailer()
+    def detail(self,Id):
+        param = dict({"movie_id":str(Id)})
 
-    if "--magnet" in sys.argv:
+        url = self.details+urlencode(param)
+        response=requests.get(url)
+        movie = Movie.Movie(response)
 
-        if "-q" in sys.argv:
+        return movie.details()
 
-            if len(sys.argv) >= sys.argv.index("-q")+1:
-                quality = sys.argv[sys.argv.index("-q")+1]
+    def find(self,query):
+        param = dict({"query_term":str(query)})
+        url = self.query+urlencode(param)
+        response=requests.get(url)
+        movie = Movie.Movie(response)
 
-            if quality not in movie.getQualities():
-                helpThePoorSoul()
+        return movie.getRecents()
 
-        else:
-            print ("please select the quality :")
-            qualities = movie.getQualities()
+    def getTrailerUrl(self,Id):
+        param = dict({"movie_id":str(Id)})
 
-            for i in range(len(qualities)):
-                print (i+1," -> ",qualities[i])
+        url = self.details+urlencode(param)
+        response=requests.get(url)
+        movie = Movie.Movie(response)
+        return str(movie.getTrailerUrl())
 
-            quality = int(input())
+    def getQualities(self,Id):
+        param = dict({"movie_id":str(Id)})
 
-        movie.downloadMagnet(quality)
+        url = self.details+urlencode(param)
 
-    if "--download" in sys.argv:
+        response=requests.get(url)
+        movie = Movie.Movie(response)
 
-        quality = ""
+        return movie.getQualities()
 
-        if "-q" in sys.argv:
+    def getMagnetUrl(self,Id,quality):
+        param = dict({"movie_id":str(Id)})
 
-            if len(sys.argv) >= sys.argv.index("-q")+1:
-                quality = sys.argv[sys.argv.index("-q")+1]
+        url = self.details+urlencode(param)
+        response=requests.get(url)
+        movie = Movie.Movie(response)
+        return movie.Magnet(quality)
 
-            if quality not in movie.getQualities():
-                helpThePoorSoul()
+    def getTorrentUrl(self,Id,quality):
+        param = dict({"movie_id":str(Id)})
 
-        else:
-            print ("please select the quality :")
-            qualities = movie.getQualities()
-
-            for i in range(len(qualities)):
-                print (i+1," -> ",qualities[i])
-
-            quality = int(raw_input())
-
-        movie.downloadTorrent(quality)
-
-    movie.displayStatus()
-
-
-else:
-    try:
-        movie.displayLatest()
-    except KeyError:
-        print ("sorry! couldn't find the movie")
-        print ("please check the movie name again")
+        url = self.details+urlencode(param)
+        response=requests.get(url)
+        movie = Movie.Movie(response)
+        return movie.Torrent(quality)
