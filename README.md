@@ -1,5 +1,11 @@
 ## yifi on commandline
 
+> python package for the yifi api
+
+includes command line tool `yifi`
+
+----------------------------------------------------------------------
+
 ###### options 
     -id <number>      get the details of movie
     -s  <r or s>      sort by rating 

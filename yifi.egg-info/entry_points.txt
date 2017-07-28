@@ -1,0 +1,3 @@
+[console_scripts]
+yifi = yifi.command_line:main
+

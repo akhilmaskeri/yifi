@@ -1,0 +1,11 @@
+setup.cfg
+setup.py
+yifi/Movie.py
+yifi/__init__.py
+yifi/command_line.py
+yifi/yifi.py
+yifi.egg-info/PKG-INFO
+yifi.egg-info/SOURCES.txt
+yifi.egg-info/dependency_links.txt
+yifi.egg-info/entry_points.txt
+yifi.egg-info/top_level.txt

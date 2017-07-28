@@ -1,5 +1,5 @@
 import requests
-import Movie
+from yifi import Movie
 
 try:
     from urllib.parse import urlencode
@@ -7,7 +7,6 @@ except ImportError:
     from urllib import urlencode
 
 class browser:
-
     def __init__(self):
         self.query ="https://yts.ag/api/v2/list_movies.json?"
         self.details = "https://yts.ag/api/v2/movie_details.json?"
