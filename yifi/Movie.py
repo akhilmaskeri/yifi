@@ -53,7 +53,10 @@ class Movie:
 
         if self.jsonObject["data"]["movie_count"] > 0:
             for movie in self.jsonObject["data"]["movies"]:
-                movie_list.append((str(movie["id"]).decode('unicode-escape'),str(movie["title"]).decode('unicode-escape')))
+                try:
+                    movie_list.append((str(movie["id"]).decode('unicode-escape'),str(movie["title"]).decode('unicode-escape')))
+                except UnicodeEncodeError:
+                    pass
 
         return movie_list
 
