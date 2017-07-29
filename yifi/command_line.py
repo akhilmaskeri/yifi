@@ -36,7 +36,7 @@ def displayDetails(movie):
 
 
 def help():
-    f = open("help.txt")
+    f = open("help")
     print(f.read())
     f.close()
 

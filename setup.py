@@ -6,7 +6,7 @@ def read(fname):
 
 setup(
     name = "yifi",
-    version = "0.1.9",
+    version = "0.1.10",
     author = "vitaminC",
     author_email = "dmakhil@gmail.com",
     url="https://github.com/AkhilMaskery/yifi",
