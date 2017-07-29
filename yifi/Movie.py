@@ -53,7 +53,7 @@ class Movie:
 
         if self.jsonObject["data"]["movie_count"] > 0:
             for movie in self.jsonObject["data"]["movies"]:
-                movie_list.append((str(movie["id"]),str(movie["title"])))
+                movie_list.append((str(movie["id"]).decode('unicode-escape'),str(movie["title"]).decode('unicode-escape')))
 
         return movie_list
 

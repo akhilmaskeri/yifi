@@ -2,14 +2,11 @@ usage
 
     -id     <number>      get the details of movie
     -s      <r or s>      sort by rating 
-    -o      <a or d>      order by ascending or descending 
     -l      <number>      list length (max of 50)
     -p      <number>      page number
     -f      <string>      find query term
-    -g      <geners>      search by geners
     -m      <number>      minimum rating (max 10)
 
-    --url                 displays the URL hit 
     --download            downloads the torrent file
     --magnet              downloads the movie using the magnet
 

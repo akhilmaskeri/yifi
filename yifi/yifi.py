@@ -1,5 +1,8 @@
 import requests
-from yifi import Movie
+try:
+    from yifi import Movie
+except ImportError:
+    import Movie
 
 try:
     from urllib.parse import urlencode

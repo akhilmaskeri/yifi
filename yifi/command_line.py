@@ -2,7 +2,11 @@ from __future__ import print_function
 import webbrowser
 import textwrap
 import sys
-from yifi import yifi
+
+try:
+    from yifi import yifi
+except ImportError:
+    import yifi
 
 def displayMovies(movies):
     for movie in movies:
