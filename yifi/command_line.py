@@ -36,10 +36,18 @@ def displayDetails(movie):
 
 
 def help():
-    f = open("help")
-    print(f.read())
-    f.close()
-
+    print("usage")
+    print()
+    print("\t\t-id     <number>      get the details of movie")
+    print("\t\t-s      <r or s>      sort by rating")
+    print("\t\t-l      <number>      list length (max of 50)")
+    print("\t\t-p      <number>      page number")
+    print("\t\t-f      <string>      find query term")
+    print("\t\t-m      <number>      minimum rating (max 10)")
+    print()
+    print("\t\t--download            downloads the torrent file")
+    print("\t\t--magnet              downloads the movie using the magnet")
+    print()
 
 def main():
     arg = sys.argv

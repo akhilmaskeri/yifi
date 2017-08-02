@@ -55,6 +55,8 @@ class Movie:
             for movie in self.jsonObject["data"]["movies"]:
                 try:
                     movie_list.append((str(movie["id"]).decode('unicode-escape'),str(movie["title"]).decode('unicode-escape')))
+                except AttributeError:
+                    movie_list.append((str(movie["id"]),str(movie["title"])))
                 except UnicodeEncodeError:
                     pass
 
