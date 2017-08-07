@@ -36,7 +36,7 @@ once you have the id you can view the details of the movie by simply
     
 to search the movie in yifi database 
     
-    $yifi -f <move_name>
+        $yifi -f <move_name>
    
 and when you want to download the movie go with
     
