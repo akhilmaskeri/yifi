@@ -4,9 +4,10 @@ import textwrap
 import sys
 
 try:
-    from yifi import yifi
-except ImportError:
     import yifi
+    yifi.browser()
+except ImportError:
+    from yifi import yifi
 
 def displayMovies(movies):
     for movie in movies:

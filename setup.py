@@ -6,7 +6,7 @@ def read(fname):
 
 setup(
     name = "yifi",
-    version = "0.2.2",
+    version = "0.2.3",
     author = "vitaminC",
     author_email = "dmakhil@gmail.com",
     url="https://github.com/AkhilMaskery/yifi",
@@ -15,6 +15,9 @@ setup(
     license = "GPLv3",
     keywords = "yifi torrent download",
     packages = ['yifi'],
+    install_requires=[
+              'requests',
+          ],
     classifiers=[
         'Development Status :: 4 - Beta',
         'Environment :: Console',
