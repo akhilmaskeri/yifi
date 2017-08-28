@@ -16,8 +16,8 @@ Command line tool for browsing and downloading the yts torrents
     -m  <number>      minimum rating (max 10)
 
     --download        downloads the torrent file
-    --magnet          downloads the movie using the magnet
-    --trailer         watch the trailer on youtube
+    --magnet          downloads the movie using the magnet
+    --trailer         watch the trailer on youtube
  
 ##### usage examples
 first simply get the list top seeded and latest movie torrent by
