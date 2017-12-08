@@ -45,6 +45,6 @@ and when you want to download the movie go with
 
 this would download the **.torrent** file 
 
-to download the movie using the torrent do
+to download the movie using the magnet do
     
         yifi -id <movie_id> --magnet
