@@ -10,7 +10,11 @@ except ImportError:
 class Movie:
 
     def __init__(self,response):
+
+        # parse the response text to json object
         self.jsonObject = json.loads(response.text)
+
+        # set the trackers
         self.trackers = [
             'udp://open.demonii.com:1337/announcejj',
             'udp://tracker.istole.it:80',
@@ -26,28 +30,33 @@ class Movie:
             'http://exodus.desync.com:6969/announce'
         ]
 
+        # initialize with movie data
         if "movie" in self.jsonObject["data"]:
             self.movie = self.jsonObject["data"]["movie"]
             self.qualities=[]
             for i in range(len(self.movie["torrents"])):
                 self.qualities.append(self.movie['torrents'][i]['quality'])
 
+    # get Magnet url
     def Magnet(self,quality):
 
         base = "magnet:?xt=urn:btih:"+self.movie["torrents"][quality-1]["hash"]+"&dn"+quote(self.movie["title"])
+
+        # add even the trackers
         for t in self.trackers:
             base+= '&tr='+t
 
         return base
 
+    # get Torrent url
     def Torrent(self,quality):
-        #print (self.movie['torrents'][quality-1]['url'],"~/Downloads/"+self.movie['title']+".torrent")
-
         return self.movie["torrents"][quality-1]['url']
 
+    # return quality list
     def getQualities(self):
         return self.qualities
 
+    # latest updated movies
     def getRecents(self):
         movie_list = []
 
@@ -62,7 +71,8 @@ class Movie:
 
         return movie_list
 
-
+    # details are in the dictionary object 
+    # which can be directly parsed to json
     def details(self):
         movie = self.movie
         details = dict();
@@ -79,6 +89,7 @@ class Movie:
 
         return details
 
+    # return the youtube trailer url
     def getTrailerUrl(self):
         return "http://youtube.com/watch?v=" + self.movie["yt_trailer_code"]
 

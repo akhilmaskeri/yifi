@@ -6,7 +6,7 @@ Command line tool for browsing and downloading the yts torrents
     
     pip install yifi
 
-##### usage options 
+##### options 
 
     -id <number>      get the details of movie
     -s  <r or s>      sort by rating 
@@ -19,7 +19,7 @@ Command line tool for browsing and downloading the yts torrents
     --magnet          downloads the movie using the magnet
     --trailer         watch the trailer on youtube
  
-##### usage examples
+##### examples
 first simply get the list top seeded and latest movie torrent by
         
         yifi
