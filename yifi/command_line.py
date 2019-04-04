@@ -1,9 +1,9 @@
 from __future__ import print_function
 import webbrowser
 import textwrap
+import requests
 import sys
 
-# make it compatible with all install locations
 try:
     import yifi
     yifi.browser()
@@ -11,11 +11,11 @@ except (ImportError, AttributeError):
     from yifi import yifi
 
 # display movie id and title
-def displayMovies(movies):
+def displayMovies( movies):
     for movie in movies:
-        print(movie[0]+" "+movie[1])
+        print( "{} {}".format(movie[0],movie[1]) )
 
-# list Qualities  
+# list Qualities
 def displayQualities(y,Id):
 
     #default selected quality
@@ -24,56 +24,59 @@ def displayQualities(y,Id):
     print ("please select the quality :")
     qualities = y.getQualities(Id)
 
-    for i in range(len(qualities)):
-        print (i+1," -> ",str(qualities[i]))
+    for i in range(len(qualities)): print(i+1, " -> ", str(qualities[i]) )
 
-    # take the input
     quality = int(input())
 
-    # on bad input ask again
+    # on bad input
     while quality < 0 and quality >= len(qualities):
-        print "bad input , please select an available quality"
+        print( "bad input , please select an available quality" )
         quality = int(input())
 
     return quality
 
 # detailed display of the movie
 def displayDetails(movie):
-    print("title   : "+str(movie["title"]))
-    print("year    : "+str(movie["year"]))
-    print("rating  : * "+str(movie["rating"]))
-    print("runtime : "+str(movie["runtime"])+" min")
-    print("lang    : "+str(movie["language"]))
-    print("genres  :",[str(genre) for genre in movie["genres"]])
-    print("mpa     : "+movie["mpa_rating"])
+
+    print("title   : " + str(movie["title"]))
+    print("year    : " + str(movie["year"]))
+    print("rating  : " + str(movie["rating"]))
+    print("runtime : " + str(movie["runtime"])+" min")
+    print("lang    : " + str(movie["language"]))
+    print("genres  : " + ",".join( [str(genre) for genre in movie["genres"]]) )
+    print("mpa     : " + movie["mpa_rating"])
     print("quality : " + movie["quality"])
-    print("descr   :"+"\n\t  ".join(textwrap.wrap(" "+movie["description_intro"])))
-    print("")
+    print("descr   : " + "\n\t  ".join(textwrap.wrap(" "+movie["description_intro"])))
+    print()
 
 # help text
 def help():
-    print("usage")
-    print()
-    print("\t\t-id     <number>      get the details of movie")
-    print("\t\t-s      <r or s>      sort by rating")
-    print("\t\t-l      <number>      list length (max of 50)")
-    print("\t\t-p      <number>      page number")
-    print("\t\t-f      <string>      find query term")
-    print("\t\t-m      <number>      minimum rating (max 10)")
-    print()
-    print("\t\t--download            downloads the torrent file")
-    print("\t\t--magnet              downloads the movie using the magnet")
-    print()
 
-# driver function
-def main():
+    help_str = """
+    usage
+
+    \t\t-id     <number>      get the details of movie
+    \t\t-s      <r or s>      sort by rating
+    \t\t-l      <number>      list length (max of 50)
+    \t\t-p      <number>      page number
+    \t\t-f      <string>      find query term
+    \t\t-m      <number>      minimum rating (max 10)
+
+    \t\t--download            downloads the torrent file
+    \t\t--magnet              downloads the movie using the magnet
+
+    """
+
+    print( help_str )
+
+def execute():
+
     arg = sys.argv
 
     if '--help' in arg:
         help()
         exit()
 
-    # instantiate the yifi browser
     y = yifi.browser()
 
     if "-id" in arg:
@@ -103,23 +106,21 @@ def main():
         # default torrent client
         if "--magnet" in arg:
 
-            # select the preferred quality
             quality = ''
             if "-q" in arg:
+                
                 if len(arg) >= arg.index("-q")+1:
                     quality = arg[arg.index("-q")+1]
 
-                if quality not in y.getQualities():
-                    quality=displayQualities(y,Id)
+                if quality not in y.getQualities(Id):
+                    quality = displayQualities(y,Id)
 
             else:
-                # ask for the quality
                 quality = displayQualities(y,Id)
 
             url = y.getMagnetUrl(Id,quality)
             webbrowser.open(url)
             exit()
-
 
         # similar to magnet links , pass download 
         # url to web browser to handle
@@ -222,3 +223,8 @@ def main():
             # display the movies with ids
             displayMovies(y.bySeeds(limit,page,min_rating))
 
+def main():
+    try:
+        execute()
+    except requests.exceptions.ConnectionError as e:
+        print("connection refuced by yifi")
